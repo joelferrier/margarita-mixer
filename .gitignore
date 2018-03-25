@@ -2,6 +2,9 @@
 main
 margarita-mixer
 
+# config files
+project.toml
+
 # Dep vendored items
 vendor/*
 !vendor/.keep

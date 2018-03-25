@@ -8,4 +8,5 @@ LiME Kernel Module Build Tool
    :maxdepth: 2
 
    quickstart
+   commands
    about
