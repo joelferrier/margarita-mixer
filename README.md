@@ -14,6 +14,15 @@ Margarita Mixer is a LiME module build tool which compiles LiME kernel modules a
 - Ubuntu 16.04
 - Ubuntu 16.10
 
+# Developing
+
+This project is developed with Go version 1.10.  Previous go releases may function but are not tested.
+
+[dep](https://github.com/golang/dep) is used to manage dependencies.  Ensure it is installed and run `dep ensure` prior to beginning development.
+
+Docker api version v1.35 is currently targeted (ships with 17.12.1-ce).
+This will be revised with compatability in mind prior to an initial release.
+
 # License
 
 The MIT License (MIT)

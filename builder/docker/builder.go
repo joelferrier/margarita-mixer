@@ -17,13 +17,15 @@ type DockerBuilder struct {
 	url          string
 	readTimeout  int64
 	writeTimeout int64
+	docker       *dockerClient
 }
 
 func NewBuilder() *DockerBuilder {
 	return &DockerBuilder{
-		defaultUrl,
-		defaultReadTimeout,
-		defaultWriteTimeout,
+		defaultUrl,          //TODO: pass through to client only
+		defaultReadTimeout,  //TODO: pass through to client only
+		defaultWriteTimeout, //TODO: pass through to client only
+		newClient(defaultUrl),
 	}
 }
 
@@ -36,6 +38,9 @@ func (b *DockerBuilder) Configure(c builder.Config) {
 
 func (b *DockerBuilder) Setup() error {
 	fmt.Println("in setup")
+
+	_ = b.docker.images()
+
 	return nil
 }
 
