@@ -5,11 +5,11 @@ import (
 )
 
 func init() {
-	rootCmd.AddCommand(profilesCmd)
+	rootCmd.AddCommand(profileCmd)
 }
 
-var profilesCmd = &cobra.Command{
-	Use:   "profiles",
+var profileCmd = &cobra.Command{
+	Use:   "profile",
 	Short: "perform operations on profiles",
 	//Long:  ``,
 }

@@ -8,10 +8,10 @@ import (
 )
 
 func init() {
-	profilesCmd.AddCommand(profilesListCmd)
+	profileCmd.AddCommand(profileListCmd)
 }
 
-var profilesListCmd = &cobra.Command{
+var profileListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "list availible profiles",
 	//Long:  ``,

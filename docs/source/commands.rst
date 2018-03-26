@@ -18,7 +18,7 @@ General Usage
   
   Available Commands:
     help        Help about any command
-    profiles    perform operations on profiles
+    profile     perform operations on profiles
     version     Print the version number of margarita-mixer
   
   Flags:
@@ -32,7 +32,7 @@ profiles
 
 .. code-block:: text
 
-  margarita-mixer profiles help
+  margarita-mixer profile help
   perform operations on profiles
   
   Usage:
@@ -44,14 +44,14 @@ profiles
   Flags:
     -h, --help   help for profiles
   
-  Use "margarita-mixer profiles [command] --help" for more information about a command.
+  Use "margarita-mixer profile [command] --help" for more information about a command.
 
 profiles list
 =============
 
 .. code-block:: text
 
-  margarita-mixer profiles list
+  margarita-mixer profile list
   
   profiles:
   
