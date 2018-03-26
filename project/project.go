@@ -36,22 +36,22 @@ var (
 //Config for project
 type Project struct {
 	Path         string
-	Builders     map[string]builder.Builder
-	Repositories map[string]repository.Repository `toml:"repository"`
-	Profiles     map[string]profile.Profile       `toml:"profile"`
+	Builders     map[string]builder.Config
+	Repositories map[string]repository.Config `toml:"repository"`
+	Profiles     map[string]profile.Config    `toml:"profile"`
 }
 
 func (p *Project) defaults() {
-	p.Builders[DefaultBuilderName] = builder.Builder{
+	p.Builders[DefaultBuilderName] = builder.Config{
 		DefaultBuilderUrl,
 		DefaultBuilderTimeout,
 	}
 
-	p.Repositories[DefaultRepositoryName] = repository.Repository{
+	p.Repositories[DefaultRepositoryName] = repository.Config{
 		DefaultRepositoryGPGSign,
 	}
 
-	p.Profiles[DefaultProfileName] = profile.Profile{
+	p.Profiles[DefaultProfileName] = profile.Config{
 		DefaultProfileImage,
 		DefaultProfilePackageManager,
 		DefaultProfileHeaderPackages,
@@ -92,9 +92,9 @@ func New() (Project, error) {
 
 	p := Project{
 		dir,
-		make(map[string]builder.Builder),
-		make(map[string]repository.Repository),
-		make(map[string]profile.Profile),
+		make(map[string]builder.Config),
+		make(map[string]repository.Config),
+		make(map[string]profile.Config),
 	}
 
 	return p, err

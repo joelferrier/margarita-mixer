@@ -1,5 +1,5 @@
 package repository
 
-type Repository struct {
+type Config struct {
 	GPGSign bool `toml:"gpgsign"`
 }

@@ -1,6 +1,6 @@
 package builder
 
-type Builder struct {
+type Config struct {
 	URL     string
 	Timeout int64
 }

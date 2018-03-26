@@ -4,14 +4,14 @@ import (
 	"fmt"
 )
 
-type Profile struct {
+type Config struct {
 	Image          string
 	PackageManager string   `toml:"package_manager"`
 	HeaderPackages []string `toml:"header_packages"`
 	Dependencies   []string
 }
 
-func (p *Profile) ToString() string {
+func (p *Config) ToString() string {
 	return fmt.Sprintf(
 		`  image: %s
   package manager: %s
