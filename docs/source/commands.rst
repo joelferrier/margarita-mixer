@@ -17,6 +17,7 @@ General Usage
     margarita-mixer [command]
   
   Available Commands:
+    build       build LiME kernel modules
     help        Help about any command
     profile     perform operations on profiles
     version     Print the version number of margarita-mixer
@@ -25,6 +26,45 @@ General Usage
     -h, --help   help for margarita-mixer
   
   Use "margarita-mixer [command] --help" for more information about a command.
+
+
+*****
+build
+*****
+
+.. code-block:: text
+
+  margarita-mixer build
+  build LiME kernel modules
+  
+  Usage:
+    margarita-mixer build [command]
+  
+  Available Commands:
+    all         build all configured profiles
+  
+  Flags:
+    -h, --help   help for build
+  
+  Use "margarita-mixer build [command] --help" for more information about a command.
+
+build all
+=========
+
+.. code-block:: text
+
+  margarita-mixer build all
+  project opened
+  in newClient
+  in configure:
+  in setup
+  in images
+  sha256:b05c3d76c8b3ef3af8974edda3941a4a028d244681cc420e5304a3829519f1b6
+  ...
+  sha256:6133b2c7d7c2fb402770857b7ebaa1eff3613c21cc257aac42a8de49e3c7f74e
+  in build
+  in extract
+  in cleanup
 
 ********
 profiles
