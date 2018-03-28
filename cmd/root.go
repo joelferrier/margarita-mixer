@@ -4,8 +4,11 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/joelferrier/margarita-mixer/project"
 	"github.com/spf13/cobra"
 )
+
+var proj project.Project
 
 var rootCmd = &cobra.Command{
 	Use:   "margarita-mixer",
@@ -21,4 +24,17 @@ func Execute() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+}
+
+func loadProject() {
+	proj, err := project.New()
+	if err != nil {
+		panic(err)
+	}
+	err = proj.Open()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("project opened")
+
 }
