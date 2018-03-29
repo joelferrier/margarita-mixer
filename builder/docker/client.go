@@ -1,11 +1,14 @@
 package docker
 
 import (
+	"encoding/json"
 	"fmt"
+	"io"
 
 	"github.com/docker/docker/api/types"
-	//"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
+	"github.com/vbauerster/mpb"
+	"github.com/vbauerster/mpb/decor"
 	"golang.org/x/net/context"
 )
 
@@ -37,8 +40,82 @@ func (c *dockerClient) images() error {
 	}
 
 	for _, image := range images {
-		fmt.Println(image.ID)
+		var t = "untagged"
+		if len(image.RepoTags) > 0 {
+			t = image.RepoTags[0]
+		}
+
+		fmt.Printf("%s ~> %s\n", t, image.ID[7:19])
 	}
 
 	return nil
+}
+
+func (c *dockerClient) pull(i string) error {
+	var err error
+	ctx := context.Background()
+
+	events, err := c.cli.ImagePull(ctx, i, types.ImagePullOptions{})
+	if err != nil {
+		panic(err)
+	}
+
+	defer events.Close()
+	d := json.NewDecoder(events)
+
+	var event *pullEvent
+	var bar *mpb.Bar
+	var lastProgress = 0
+
+	p := mpb.New(
+		mpb.WithWidth(100),
+	)
+
+	for {
+		err := d.Decode(&event)
+
+		if err == io.EOF {
+			p.Stop()
+			break
+		} else if err != nil {
+			p.Stop()
+			return err
+		}
+
+		switch status := event.Status; status {
+		case "Downloading":
+			fallthrough
+		case "Extracting":
+			if bar == nil || bar.InProgress() == false {
+				lastProgress = 0
+				bar = p.AddBar(int64(event.ProgressDetail.Total),
+					mpb.PrependDecorators(
+						decor.StaticName(status, 11, 0),
+						decor.ETA(4, 0),
+					),
+					mpb.AppendDecorators(
+						decor.Percentage(5, 0),
+					),
+				)
+			} else {
+				bar.IncrBy(event.ProgressDetail.Current - lastProgress)
+				lastProgress = event.ProgressDetail.Current
+			}
+		case "Download complete":
+			fallthrough
+		case "Verifying checksum":
+			fallthrough
+		case "Pull complete":
+			if bar != nil || bar.InProgress() {
+				bar.SetTotal(bar.Total(), true)
+				bar.Complete()
+				p.RemoveBar(bar)
+			}
+			fmt.Println(status)
+		default:
+			fmt.Println(status)
+		}
+	}
+
+	return err
 }

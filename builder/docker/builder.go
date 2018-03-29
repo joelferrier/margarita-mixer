@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/joelferrier/margarita-mixer/config/builder"
+	"github.com/joelferrier/margarita-mixer/config/profile"
 )
 
 const (
@@ -36,9 +37,10 @@ func (b *DockerBuilder) Configure(c builder.Config) {
 	b.writeTimeout = c.Timeout
 }
 
-func (b *DockerBuilder) Setup() error {
+func (b *DockerBuilder) Setup(p profile.Config) error {
 	fmt.Println("in setup")
-
+	_ = b.docker.images()
+	_ = b.docker.pull(p.Image)
 	_ = b.docker.images()
 
 	return nil

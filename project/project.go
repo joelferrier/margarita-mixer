@@ -84,7 +84,7 @@ func (p *Project) PrintProfiles() {
 	}
 }
 
-func New() (Project, error) {
+func New() (*Project, error) {
 	dir, err := os.Getwd()
 	if err != nil {
 		fmt.Println(err)
@@ -97,5 +97,5 @@ func New() (Project, error) {
 		make(map[string]profile.Config),
 	}
 
-	return p, err
+	return &p, err
 }

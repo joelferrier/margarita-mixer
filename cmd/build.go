@@ -12,4 +12,7 @@ var buildCmd = &cobra.Command{
 	Use:   "build",
 	Short: "build LiME kernel modules",
 	//Long:  ``,
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		proj = loadProject()
+	},
 }

@@ -68,6 +68,12 @@
   version = "v1.0"
 
 [[projects]]
+  name = "github.com/mattn/go-isatty"
+  packages = ["."]
+  revision = "0360b2af4f38e8d38c7fce2a9f4e702702d73a39"
+  version = "v0.0.3"
+
+[[projects]]
   name = "github.com/pkg/errors"
   packages = ["."]
   revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
@@ -86,6 +92,16 @@
   version = "v1.0.0"
 
 [[projects]]
+  name = "github.com/vbauerster/mpb"
+  packages = [
+    ".",
+    "cwriter",
+    "decor"
+  ]
+  revision = "e227edc706423683a577a93c78beb0ce9d211b00"
+  version = "v3.1.1"
+
+[[projects]]
   branch = "master"
   name = "golang.org/x/net"
   packages = [
@@ -98,12 +114,15 @@
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
-  packages = ["windows"]
+  packages = [
+    "unix",
+    "windows"
+  ]
   revision = "91ee8cde435411ca3f1cd365e8f20131aed4d0a1"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "282f3cded7793644c2f1cf453990fa0d850978c8c3ef29dc06525f9aaecbe5f0"
+  inputs-digest = "71ab24b971f1f251059e49ebc30afcce94580eabf721f21af4c520decd81b708"
   solver-name = "gps-cdcl"
   solver-version = 1

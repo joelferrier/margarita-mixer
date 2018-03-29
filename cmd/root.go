@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var proj project.Project
+var proj *project.Project
 
 var rootCmd = &cobra.Command{
 	Use:   "margarita-mixer",
@@ -26,15 +26,15 @@ func Execute() {
 	}
 }
 
-func loadProject() {
-	proj, err := project.New()
+func loadProject() *project.Project {
+	p, err := project.New()
 	if err != nil {
 		panic(err)
 	}
-	err = proj.Open()
+	p.Open()
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println("project opened")
-
+	return p
 }
