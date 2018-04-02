@@ -13,26 +13,28 @@ import (
 )
 
 type dockerClient struct {
-	url string
-	cli *client.Client
+	url          string
+	apiVersion   string
+	readTimeout  int64
+	writeTimeout int64
+	cli          *client.Client
 }
 
-func newClient(url string) *dockerClient {
-	fmt.Println("in newClient")
+func newClient(url string, apiVersion string, readTimeout int64, writeTimeout int64) (*dockerClient, error) {
+	cli, err := client.NewClient(url, apiVersion, nil, nil)
+
 	return &dockerClient{
 		url,
-		nil,
-	}
+		apiVersion,
+		readTimeout,
+		writeTimeout,
+		cli,
+	}, err
 }
 
 func (c *dockerClient) images() error {
 	fmt.Println("in images")
 	var err error
-
-	c.cli, err = client.NewClient(c.url, defaultApiVersion, nil, nil)
-	if err != nil {
-		panic(err)
-	}
 
 	images, err := c.cli.ImageList(context.Background(), types.ImageListOptions{})
 	if err != nil {

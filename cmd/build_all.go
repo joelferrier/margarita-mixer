@@ -16,7 +16,10 @@ var buildAllCmd = &cobra.Command{
 	//Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		var b builder.Builder
-		b = docker.NewBuilder()
+		b, err := docker.NewBuilder()
+		if err != nil {
+			panic(err)
+		}
 
 		b.Configure(proj.Builders["docker"])
 		_ = b.Setup(proj.Profiles["amzn1"])

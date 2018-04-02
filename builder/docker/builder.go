@@ -21,13 +21,19 @@ type DockerBuilder struct {
 	docker       *dockerClient
 }
 
-func NewBuilder() *DockerBuilder {
+func NewBuilder() (*DockerBuilder, error) {
+	client, err := newClient(
+		defaultUrl,
+		defaultApiVersion,
+		defaultReadTimeout,
+		defaultWriteTimeout,
+	)
 	return &DockerBuilder{
-		defaultUrl,          //TODO: pass through to client only
-		defaultReadTimeout,  //TODO: pass through to client only
-		defaultWriteTimeout, //TODO: pass through to client only
-		newClient(defaultUrl),
-	}
+		defaultUrl,
+		defaultReadTimeout,
+		defaultWriteTimeout,
+		client,
+	}, err
 }
 
 func (b *DockerBuilder) Configure(c builder.Config) {
