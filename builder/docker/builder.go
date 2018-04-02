@@ -2,6 +2,7 @@ package docker
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/joelferrier/margarita-mixer/config/builder"
 	"github.com/joelferrier/margarita-mixer/config/profile"
@@ -19,6 +20,7 @@ type DockerBuilder struct {
 	readTimeout  int64
 	writeTimeout int64
 	docker       *dockerClient
+	containers   map[string]*container
 }
 
 func NewBuilder() (*DockerBuilder, error) {
@@ -28,11 +30,15 @@ func NewBuilder() (*DockerBuilder, error) {
 		defaultReadTimeout,
 		defaultWriteTimeout,
 	)
+
+	containers := make(map[string]*container)
+
 	return &DockerBuilder{
 		defaultUrl,
 		defaultReadTimeout,
 		defaultWriteTimeout,
 		client,
+		containers,
 	}, err
 }
 
@@ -45,11 +51,23 @@ func (b *DockerBuilder) Configure(c builder.Config) {
 
 func (b *DockerBuilder) Setup(p profile.Config) error {
 	fmt.Println("in setup")
+	var err error
 	_ = b.docker.images()
-	_ = b.docker.pull(p.Image)
+	err = b.docker.pull(p.Image)
+	if err != nil {
+		return err
+	}
 	_ = b.docker.images()
+	c, err := b.docker.container(p.Image)
+	if err != nil {
+		return err
+	}
+	b.containers[p.Image] = c
 
-	return nil
+	fmt.Println(c)
+	_ = c.start()
+
+	return err
 }
 
 func (b *DockerBuilder) Build() error {
@@ -64,5 +82,21 @@ func (b *DockerBuilder) Extract() error {
 
 func (b *DockerBuilder) Cleanup() error {
 	fmt.Println("in cleanup")
-	return nil
+	var err error
+
+	for name, container := range b.containers {
+		time.Sleep(100)
+		fmt.Printf("stopping %s container\n", name)
+		err = container.stop()
+		if err != nil {
+			return err
+		}
+		time.Sleep(30)
+		fmt.Printf("removing %s container\n", name)
+		_ = container.remove()
+		if err != nil {
+			return err
+		}
+	}
+	return err //TODO: return slice of errors
 }

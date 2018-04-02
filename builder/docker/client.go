@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"strings"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
@@ -53,11 +54,11 @@ func (c *dockerClient) images() error {
 	return nil
 }
 
-func (c *dockerClient) pull(i string) error {
+func (c *dockerClient) pull(image string) error {
 	var err error
 	ctx := context.Background()
 
-	events, err := c.cli.ImagePull(ctx, i, types.ImagePullOptions{})
+	events, err := c.cli.ImagePull(ctx, image, types.ImagePullOptions{})
 	if err != nil {
 		panic(err)
 	}
@@ -120,4 +121,11 @@ func (c *dockerClient) pull(i string) error {
 	}
 
 	return err
+}
+
+func (c *dockerClient) container(image string) (*container, error) {
+	var name string
+	parts := strings.Split(image, ":")
+	name = fmt.Sprintf("mixer_%s", parts[0])
+	return newContainer(name, image, c.cli)
 }
